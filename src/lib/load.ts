@@ -1,8 +1,6 @@
 import { parse } from "yaml";
 
 export type RouteTree = {
-    name: string,
-    agency: string,
     globalbasepath: string,
     schemebasepath: string,
     routes: {
@@ -32,8 +30,6 @@ export async function loadScheme(scheme: string) {
     let raw_scheme = parse(await raw.text());
 
     let tree: RouteTree = {
-        "name": raw_scheme["NAME"],
-        "agency": raw_scheme["AGENCY"],
         "globalbasepath": globals["BASEPATH"],
         "schemebasepath": raw_scheme["BASEPATH"],
         "routes": {}

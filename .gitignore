@@ -1,5 +1,3 @@
-static/data
-static/audio
 .DS_Store
 node_modules
 /build

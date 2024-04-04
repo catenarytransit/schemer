@@ -80,7 +80,6 @@
 			{#await index}
 				<h1>Loading...</h1>
 			{:then tree}
-				<h1>{tree.NAME}</h1>
 				{#each tree.SCHEMES as schemeopt}
 					<button
 						on:click={() => {
@@ -92,7 +91,7 @@
 					</button>
 				{/each}
 			{:catch error}
-				Error loading scheme: {error.message}
+				Error loading index: {error.message}
 			{/await}
 		</div>
 	{:else if active_route_name === 'RESERVED:SELECT-ROUTE'}
@@ -100,7 +99,6 @@
 			{#await scheme}
 				<h1>Loading...</h1>
 			{:then tree}
-				<h1>{tree.name}</h1>
 				{#each Object.keys(tree.routes) as route}
 					<button
 						on:click={() => {
@@ -193,14 +191,27 @@
 					audio.pause();
 				}
 				active_sync_name = active_route[active_sync].name;
-				let chime_index = active_route[active_sync].audio.indexOf(global_basepath + '<CHIME>');
-				if (chime_index > -1) {
-					active_route[active_sync].audio[chime_index] = chime;
+
+				let chime_index_global = active_route[active_sync].audio.indexOf(global_basepath + '<CHIME>');
+				let chime_index_local = active_route[active_sync].audio.indexOf(scheme_basepath + '<CHIME>');
+
+				if (chime_index_global > -1) {
+					active_route[active_sync].audio[chime_index_global] = chime;
 				}
 
-				let alt_chime_index = active_route[active_sync].audio.indexOf(global_basepath + '<ALTCHIME>');
-				if (alt_chime_index > -1) {
-					active_route[active_sync].audio[alt_chime_index] = alt_chime;
+				if (chime_index_local > -1) {
+					active_route[active_sync].audio[chime_index_local] = chime;
+				}
+
+				let alt_chime_index_global = active_route[active_sync].audio.indexOf(global_basepath + '<ALTCHIME>');
+				let alt_chime_index_local = active_route[active_sync].audio.indexOf(scheme_basepath + '<ALTCHIME>');
+
+				if (alt_chime_index_global > -1) {
+					active_route[active_sync].audio[alt_chime_index_global] = alt_chime;
+				}
+
+				if (alt_chime_index_local > -1) {
+					active_route[active_sync].audio[alt_chime_index_local] = alt_chime;
 				}
 
 				play_audios(active_route[active_sync].audio);
