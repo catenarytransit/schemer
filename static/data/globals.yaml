@@ -1,9 +1,0 @@
-BASEPATH: /audio/
-NEXTSTOP:
-    - <CHIME>
-    - NEXT.wav
-    - ARG[0]
-ARRIVING:
-    - <CHIME>
-    - ARRIVING.wav
-    - ARG[0]

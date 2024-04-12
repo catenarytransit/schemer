@@ -1,7 +1,6 @@
 <script lang="ts">
-	import { loadIndex, loadScheme, type RouteTree, type RouteSync } from '$lib/load';
+	import { loadScheme, type RouteTree, type RouteSync } from '$lib/load';
 	let scheme: Promise<RouteTree>;
-	let index: Promise<any> = loadIndex();
 
 	export let global_basepath: string = '';
 	export let scheme_basepath: string = '';
@@ -20,7 +19,7 @@
 		date_time = `${new Date().toLocaleTimeString()} ${new Date().toLocaleDateString()}`;
 	}, 1000)
 
-	const chime = '/assets/chime.mp3';
+	const chime = '/assets/chime.wav';
 	const alt_chime = '/assets/altchime.wav';
 	let audio: HTMLAudioElement;
 
@@ -77,22 +76,16 @@
 <div id="app">
 	{#if active_route_name === 'RESERVED:SELECT-SCHEME'}
 		<div id="home">
-			{#await index}
-				<h1>Loading...</h1>
-			{:then tree}
-				{#each tree.SCHEMES as schemeopt}
-					<button
-						on:click={() => {
-							scheme = loadScheme(schemeopt.URL);
-							active_route_name = 'RESERVED:SELECT-ROUTE';
-						}}
-					>
-						{schemeopt.NAME}
-					</button>
-				{/each}
-			{:catch error}
-				Error loading index: {error.message}
-			{/await}
+			<input type="text" id="globalinp" placeholder="Globals URL" value="/data/globals.yaml">
+			<input type="text" id="schemeinp" placeholder="Scheme URL" value="/data/scheme/trolley.cas">
+			<button
+				on:click={() => {
+					// @ts-ignore
+					scheme = loadScheme(document.getElementById('schemeinp').value, document.getElementById('globalinp').value);
+					active_route_name = 'RESERVED:SELECT-ROUTE';
+				}}>
+				LOAD
+			</button>
 		</div>
 	{:else if active_route_name === 'RESERVED:SELECT-ROUTE'}
 		<div id="home">
@@ -166,18 +159,6 @@
 			<br />
 			<button
 				on:click={() => {
-					if (audio) {
-						audio.pause();
-					}
-					let chime_audio = new Audio(alt_chime);
-					chime_audio.play();
-				}}
-			>
-				ALT CHIME
-			</button>
-			<br />
-			<button
-				on:click={() => {
 					set_sync_mode = !set_sync_mode;
 				}}
 			>
@@ -201,17 +182,6 @@
 
 				if (chime_index_local > -1) {
 					active_route[active_sync].audio[chime_index_local] = chime;
-				}
-
-				let alt_chime_index_global = active_route[active_sync].audio.indexOf(global_basepath + '<ALTCHIME>');
-				let alt_chime_index_local = active_route[active_sync].audio.indexOf(scheme_basepath + '<ALTCHIME>');
-
-				if (alt_chime_index_global > -1) {
-					active_route[active_sync].audio[alt_chime_index_global] = alt_chime;
-				}
-
-				if (alt_chime_index_local > -1) {
-					active_route[active_sync].audio[alt_chime_index_local] = alt_chime;
 				}
 
 				play_audios(active_route[active_sync].audio);
@@ -242,13 +212,15 @@
 		margin: 0;
 		font-size: 1.3em;
 		overflow: hidden;
+		cursor: crosshair !important;
 	}
 
 	* {
 		font-family: VT323, sans-serif !important;
+		cursor: crosshair !important;
 	}
 
-	:global(button) {
+	:global(button, input) {
 		background: var(--darksky);
 		border: 3px solid var(--seashore);
 		color: white;
@@ -256,7 +228,6 @@
 		padding: 0.5rem;
 		margin: 3px;
 		border-radius: 0.5rem;
-		cursor: pointer;
 		font-weight: bold;
 	}
 

@@ -15,21 +15,15 @@ export type RouteSync = {
 
 let globals: any;
 
-export async function loadIndex() {
-    let raw_globals = await fetch("/data/globals.yaml");
+export async function loadScheme(scheme: string, globals: string) {
+    let raw_globals = await fetch(globals);
     globals = parse(await raw_globals.text());
-
-    let raw_index = await fetch("/data/index.yaml");
-    let index = parse(await raw_index.text());
-
-    return index;
-}
-
-export async function loadScheme(scheme: string) {
+    
     let raw = await fetch(scheme);
     let raw_scheme = parse(await raw.text());
 
     let tree: RouteTree = {
+        // @ts-ignore
         "globalbasepath": globals["BASEPATH"],
         "schemebasepath": raw_scheme["BASEPATH"],
         "routes": {}

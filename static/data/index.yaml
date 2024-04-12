@@ -1,4 +1,0 @@
-GLOBALS: /data/globals.yaml
-SCHEMES:
-  - NAME: SAMPLE SCHEME
-    URL: /data/sample.cas
