@@ -93,7 +93,7 @@
 	{#if active_route_name === 'RESERVED:SELECT-SCHEME'}
 		<div id="home">
 			<input type="text" id="schemeinp" placeholder="Scheme" value={prefill_scheme}>
-			<input type="text" id="globalinp" placeholder="Globals (optional)">
+			<input type="text" id="globalinp" placeholder="Globals (optional)" value={prefill_globals}>
 			<button
 				on:click={() => {
 					// @ts-ignore
