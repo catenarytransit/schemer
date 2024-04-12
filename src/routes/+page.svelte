@@ -1,6 +1,7 @@
 <script lang="ts">
 	import { loadScheme, type RouteTree, type RouteSync } from '$lib/load';
 	import { onMount } from 'svelte';
+	import { page } from '$app/stores';
 	let scheme: Promise<RouteTree>;
 
 	export let global_basepath: string = '';
@@ -24,10 +25,16 @@
 	const horn = '/assets/horn.mp3';
 
 	let horn_audio: any;
+	let prefill_scheme: string | null;
+	let prefill_globals: string | null;
+
 	onMount(() => {
 		horn_audio = new Audio(horn);
 		horn_audio.volume = 0.2;
 		horn_audio.loop = true;
+
+    	prefill_scheme = $page.url.searchParams.get('scheme')
+		prefill_globals = $page.url.searchParams.get('globals')
 	})
 
 	let audio: HTMLAudioElement;
@@ -85,7 +92,7 @@
 <div id="app">
 	{#if active_route_name === 'RESERVED:SELECT-SCHEME'}
 		<div id="home">
-			<input type="text" id="schemeinp" placeholder="Scheme">
+			<input type="text" id="schemeinp" placeholder="Scheme" value={prefill_scheme}>
 			<input type="text" id="globalinp" placeholder="Globals (optional)">
 			<button
 				on:click={() => {
