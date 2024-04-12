@@ -76,8 +76,8 @@
 <div id="app">
 	{#if active_route_name === 'RESERVED:SELECT-SCHEME'}
 		<div id="home">
-			<input type="text" id="globalinp" placeholder="Globals URL" value="/data/globals.yaml">
-			<input type="text" id="schemeinp" placeholder="Scheme URL" value="/data/scheme/trolley.cas">
+			<input type="text" id="globalinp" placeholder="Globals URL">
+			<input type="text" id="schemeinp" placeholder="Scheme URL">
 			<button
 				on:click={() => {
 					// @ts-ignore
