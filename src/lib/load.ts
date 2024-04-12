@@ -15,16 +15,18 @@ export type RouteSync = {
 
 let globals: any;
 
-export async function loadScheme(scheme: string, globals: string) {
-    let raw_globals = await fetch(globals);
-    globals = parse(await raw_globals.text());
+export async function loadScheme(scheme: string, globals_src: string) {
+    if (globals_src) {
+        let raw_globals = await fetch(globals_src);
+        globals = parse(await raw_globals.text());
+    }
     
     let raw = await fetch(scheme);
     let raw_scheme = parse(await raw.text());
 
     let tree: RouteTree = {
         // @ts-ignore
-        "globalbasepath": globals["BASEPATH"],
+        "globalbasepath": globals ? globals["BASEPATH"] : '',
         "schemebasepath": raw_scheme["BASEPATH"],
         "routes": {}
     }
@@ -49,7 +51,7 @@ export async function loadScheme(scheme: string, globals: string) {
                     if (audio_id.includes("*")) {
                         audio_id = audio_id.replaceAll("*", sync_id)
                     }
-                    if (audio_id.startsWith("$")) {
+                    if (audio_id.startsWith("$") && globals) {
                         if (audio_id.includes('[')) {
                             let audio_id_split = audio_id.split('[')
                             let audio_id_key = audio_id_split[0].replace("$", "")
