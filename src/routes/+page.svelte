@@ -1,5 +1,6 @@
 <script lang="ts">
 	import { loadScheme, type RouteTree, type RouteSync } from '$lib/load';
+	import { onMount } from 'svelte';
 	let scheme: Promise<RouteTree>;
 
 	export let global_basepath: string = '';
@@ -20,7 +21,15 @@
 	}, 1000)
 
 	const chime = '/assets/chime.wav';
-	const alt_chime = '/assets/altchime.wav';
+	const horn = '/assets/horn.mp3';
+
+	let horn_audio: any;
+	onMount(() => {
+		horn_audio = new Audio(horn);
+		horn_audio.volume = 0.2;
+		horn_audio.loop = true;
+	})
+
 	let audio: HTMLAudioElement;
 
 	const play_audios = (audios: string[]) => {
@@ -155,6 +164,14 @@
 				}}
 			>
 				CHIME
+			</button>
+			<br />
+			<button
+				on:click={() => {
+					horn_audio.paused ? horn_audio.play() : horn_audio.pause();	
+				}}
+			>
+				HORN ON/OFF
 			</button>
 			<br />
 			<button
