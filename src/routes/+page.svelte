@@ -21,8 +21,8 @@
 		date_time = `${new Date().toLocaleTimeString()} ${new Date().toLocaleDateString()}`;
 	}, 1000)
 
-	const chime = '/assets/chime.wav';
-	const horn = '/assets/horn.mp3';
+	const chime = '/schemer/assets/chime.wav';
+	const horn = '/schemer/assets/horn.mp3';
 
 	let horn_audio: any;
 	let prefill_scheme: string | null;
@@ -214,7 +214,7 @@
 				}
 			}}
 		>
-			<img src="/assets/next.svg" alt="Next audio" height="90" />
+			<img src="/schemer/assets/next.svg" alt="Next audio" height="90" />
 		</button>
 	{/if}
 </div>

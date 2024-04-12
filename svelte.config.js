@@ -9,7 +9,7 @@ const config = {
 			fallback: '404.html'
 		}),
 		paths: {
-			base: process.argv.includes('dev') ? '' : '/schemer'
+			base: '/schemer'
 		}
 	}
 };
