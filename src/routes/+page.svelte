@@ -21,7 +21,7 @@
 		date_time = `${new Date().toLocaleTimeString()} ${new Date().toLocaleDateString()}`;
 	}, 1000)
 
-	const chime = '/schemer/assets/chime.wav';
+	const chime = '/schemer/assets/chime.mp3';
 	const horn = '/schemer/assets/horn.mp3';
 
 	let horn_audio: any;
